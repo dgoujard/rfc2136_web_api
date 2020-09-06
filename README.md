@@ -9,7 +9,7 @@ Tested with KnotDNS server for personal use.
 
 ## Features
 - Rest API (List/Create/Delete records) (/api endpoint)
-- Swagger API Doc (/swagger endpoint)
+- Swagger API Doc (/swagger endpoint, [Doc](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/dgoujard/rfc2136_web_api/master/public/swagger/swagger.json))
 - Web Dashboard in React (CRUD for A/AAAA/Cname/NS/MX records only) (/ endpoint)
 - Dockerfile to compile the project (docker dir)
 
