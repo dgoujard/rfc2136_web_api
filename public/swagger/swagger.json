@@ -1,0 +1,244 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "API for RFC2136 DNS server",
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/api/v1/zones": {
+      "get": {
+        "description": "Return Zones",
+        "tags": [
+          "Dns"
+        ],
+        "operationId": "getZones",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/SwagZones"
+          }
+        }
+      }
+    },
+    "/api/v1/zones/{zoneName}": {
+      "get": {
+        "description": "Return DNS records for the zone",
+        "tags": [
+          "Dns"
+        ],
+        "operationId": "getDnsRecords",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "\"dgoujard.network\"",
+            "x-go-name": "ZoneName",
+            "description": "Zone name for the query",
+            "name": "zoneName",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SwagDnsRecord",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SwagDnsRecord"
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/responses/DnsRecordRespNotFound"
+          }
+        }
+      },
+      "post": {
+        "description": "Create DNS record",
+        "tags": [
+          "Dns"
+        ],
+        "operationId": "createDnsRecord",
+        "parameters": [
+          {
+            "description": "Dnsrecord object that needs to be added to the store",
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/SwagDnsRecord"
+            }
+          },
+          {
+            "type": "string",
+            "example": "\"dgoujard.network\"",
+            "x-go-name": "ZoneName",
+            "description": "Zone name for the query",
+            "name": "zoneName",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SwagDnsRecord",
+            "schema": {
+              "$ref": "#/definitions/SwagDnsRecord"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/DnsRecordRespNotFound"
+          }
+        }
+      }
+    },
+    "/api/v1/zones/{zoneName}/{recordId}": {
+      "get": {
+        "description": "Return DNS record by Id",
+        "tags": [
+          "Dns"
+        ],
+        "operationId": "getDnsRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "\"dgoujard.network\"",
+            "x-go-name": "ZoneName",
+            "description": "Zone name for the query",
+            "name": "zoneName",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "RecordId",
+            "description": "Record ID for the query",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SwagDnsRecord",
+            "schema": {
+              "$ref": "#/definitions/SwagDnsRecord"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/DnsRecordRespNotFound"
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete DNS record by Id",
+        "tags": [
+          "Dns"
+        ],
+        "operationId": "deleteDnsRecord",
+        "parameters": [
+          {
+            "type": "string",
+            "example": "\"dgoujard.network\"",
+            "x-go-name": "ZoneName",
+            "description": "Zone name for the query",
+            "name": "zoneName",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "x-go-name": "RecordId",
+            "description": "Record ID for the query",
+            "name": "recordId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": " Deleted successfully"
+          },
+          "404": {
+            "$ref": "#/responses/DnsRecordRespNotFound"
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "description": "If the server is ready, return HTTP 200 code",
+        "tags": [
+          "get"
+        ],
+        "operationId": "liveness",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/HealthRespOk"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SwagDnsRecord": {
+      "description": "DNSRecord response",
+      "type": "object",
+      "properties": {
+        "Fqdn": {
+          "type": "string"
+        },
+        "GeneratedId": {
+          "type": "string"
+        },
+        "TTL": {
+          "type": "integer",
+          "format": "uint32"
+        },
+        "Type": {
+          "type": "string"
+        },
+        "Values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "x-go-package": "dnsapi/swagger"
+    }
+  },
+  "responses": {
+    "DnsRecordRespNotFound": {
+      "description": "Not found response"
+    },
+    "HealthRespOk": {
+      "description": "Success response"
+    },
+    "SwagZones": {
+      "description": "Zone list",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "http_auth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "http_auth": [
+        "[]"
+      ]
+    }
+  ]
+}

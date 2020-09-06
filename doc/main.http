@@ -1,0 +1,17 @@
+GET http://localhost:8080/api/v1/zones/dgoujard.network
+Accept: application/json
+Authorization: Basic {{username}} {{password}}
+
+###
+
+GET http://localhost:8080/api/v1/zones/FAKE.com
+Accept: application/json
+Authorization: Basic {{username}} {{password}}
+
+###
+
+GET http://localhost:8080/api/v1/zones/dgoujard.network/3229665d628dc0a5adfc435343eb0fd3
+Accept: application/json
+Authorization: Basic {{username}} {{password}}
+
+###
