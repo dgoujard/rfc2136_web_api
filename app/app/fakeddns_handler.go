@@ -37,7 +37,6 @@ func (app *App) HandleFakeDDNSNoIP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, zoneRecord := range zoneRecords {
-		app.logger.Printf("%v",zoneRecord.Fqdn)
 		if recordFqdn == zoneRecord.Fqdn {
 			app.rfc2136.DeleteRecordForZone(zone,&zoneRecord)
 		}
