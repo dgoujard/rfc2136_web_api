@@ -182,6 +182,23 @@
           }
         }
       }
+    },
+    "/nic/update": {
+      "get": {
+        "description": "Return None",
+        "tags": [
+          "FakeDns"
+        ],
+        "operationId": "FakeDDNSNoIP",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/HealthRespOk"
+          },
+          "404": {
+            "$ref": "#/responses/DnsRecordRespNotFound"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -209,7 +226,7 @@
           }
         }
       },
-      "x-go-package": "dnsapi/swagger"
+      "x-go-package": "github.com/dgoujard/rfc2136_web_api/swagger"
     }
   },
   "responses": {

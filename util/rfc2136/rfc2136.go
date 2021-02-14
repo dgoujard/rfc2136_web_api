@@ -146,7 +146,6 @@ func (rfc *Rfc2136 ) AddRecordForZone(zoneName string, record *DnsRecord) error 
 		fmt.Printf("bad return code: %s", dns.RcodeToString[resp.Rcode])*/
 		return errors.New(fmt.Sprintf("bad return code: %s", dns.RcodeToString[resp.Rcode]))
 	}
-	fmt.Println("ok")
 	return nil
 }
 func (rfc *Rfc2136 ) DeleteRecordForZone(zoneName string, record *DnsRecord) error {

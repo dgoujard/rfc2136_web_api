@@ -44,6 +44,11 @@ func New(a *app.App) *chi.Mux {
 		})
 	})
 
+	//No-ip fake DDNS Server
+	r.Route("/nic", func(r chi.Router) {
+		r.Use(a.AuthCheck)
+		r.Method("GET", "/update", requestlog.NewHandler(a.HandleFakeDDNSNoIP, l))
+	})
 	FileServer(r, "/ui", pkger.Dir("/public/ui"))
 	FileServer(r, "/swagger", pkger.Dir("/public/swagger"))
 
@@ -82,6 +87,7 @@ func RootRouter() chi.Router {
 	// TODO: handle 404 in react router http://knowbody.github.io/react-router-docs/guides/NotFound.html
 	r.Get("/*", func(w http.ResponseWriter, r *http.Request) {
 		f, err := pkger.Open("/public/ui/index.html")
+		//log.Printf("%v",r.URL.Path)
 		if err != nil {
 			http.Error(w, err.Error(), 422)
 		}
