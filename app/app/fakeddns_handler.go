@@ -14,6 +14,10 @@ import (
 
 func (app *App) HandleFakeDDNSNoIP(w http.ResponseWriter, r *http.Request) {
 	myip := r.URL.Query().Get("myip")
+	ipRecordType := "A"
+	if(strings.Contains(myip, ":")) {
+		ipRecordType = "AAAA"
+	}
 	hostname := r.URL.Query().Get("hostname")
 
 	parts := strings.Split(hostname, ".")
@@ -35,20 +39,28 @@ func (app *App) HandleFakeDDNSNoIP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 422)
 		return
 	}
-
+	var zoneRecordNeedUpdate = true;
 	for _, zoneRecord := range zoneRecords {
 		if recordFqdn == zoneRecord.Fqdn {
-			app.rfc2136.DeleteRecordForZone(zone,&zoneRecord)
+			if zoneRecord.Values[0] == myip && zoneRecord.Type == ipRecordType{
+				zoneRecordNeedUpdate = false
+			}else{
+				app.rfc2136.DeleteRecordForZone(zone,&zoneRecord)
+			}
 		}
 	}
-	newDnsRecord := rfc2136.DnsRecord{
-		Fqdn:        recordFqdn,
-		Type:        "A",
-		Values:      []string{myip},
-		TTL:         0,
-	}
-
-	app.rfc2136.AddRecordForZone(zone,&newDnsRecord)
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("."))
+
+	if zoneRecordNeedUpdate {
+		newDnsRecord := rfc2136.DnsRecord{
+			Fqdn:        recordFqdn,
+			Type:        ipRecordType,
+			Values:      []string{myip},
+			TTL:         0,
+		}
+		app.rfc2136.AddRecordForZone(zone,&newDnsRecord)
+		w.Write([]byte("Updated"))
+	}else{
+		w.Write([]byte("No change"))
+	}
 }
