@@ -17,9 +17,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build docker image
-        run: docker build . --file docker/Dockerfile --tag registry.dev.dgoujard.network/dnsapi:latest-${GITHUB_SHA::8}
+        run: docker build . --file docker/Dockerfile --tag registry.app.dgoujard.network/dnsapi:latest-${GITHUB_SHA::8}
       - name: Publish docker image
-        run: docker push registry.dev.dgoujard.network/dnsapi:latest-${GITHUB_SHA::8}
+        run: docker push registry.app.dgoujard.network/dnsapi:latest-${GITHUB_SHA::8}
         if: github.ref == 'refs/heads/master'
       - name: Clone k8s config
         uses: actions/checkout@v2
