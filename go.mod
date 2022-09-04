@@ -10,4 +10,5 @@ require (
 	github.com/markbates/pkger v0.17.0
 	github.com/miekg/dns v1.1.30
 	github.com/rs/zerolog v1.19.0
+	golang.org/x/sys v0.0.0-20220829200755-d48e67d00261 // indirect
 )

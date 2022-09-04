@@ -23,7 +23,7 @@ RUN npm run build
 ############################
 # STEP 2 build executable binary
 ############################
-FROM golang:1.14.6-alpine3.12 as builder
+FROM golang:1.19.0-alpine3.16 as builder
 # Create appuser.
 ENV USER=appuser
 ENV UID=10001
